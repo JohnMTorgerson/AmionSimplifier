@@ -2,5 +2,5 @@
 
 /* just for testing purposes */
 #newDOM {
-  border:5px solid green;
+  border:5px solid green !important;
 }
