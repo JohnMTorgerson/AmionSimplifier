@@ -296,68 +296,6 @@ function applyCSS() {
  style.setAttribute('type','text/css');
  style.setAttribute('href','https://johnmtorgerson.github.io/AmionSimplifier/bookmarklet.css');
  document.getElementsByTagName('head')[0].appendChild(style); 
-	
-  /* set some body styles */
-  document.body.style.backgroundColor = "#EEEEFF";
-  document.body.style.fontSize = "20px";
-  document.body.style.fontFamily = "'Trebuchet MS', sans-serif";
-
-  /* the main container */
-  var mainContainer = document.getElementById("newDOM");
-  mainContainer.style.maxWidth = "700px";
-  mainContainer.style.marginLeft = "180px";
- 	mainContainer.style.position = "relative";
- 	mainContainer.style.left = "50%";
- 	mainContainer.style.transform = "translateX(-50%)";
-
-  var accounts = document.getElementsByClassName("account");
-  for (var i = 0; i < accounts.length; i++) {
-    accounts[i].style.margin = "auto";
-    accounts[i].style.paddingRight = "15px";
-    accounts[i].style.paddingLeft = "10px";
-    accounts[i].style.position = "absolute";
-    accounts[i].style.transform = "translateX(-100%)";
-    accounts[i].style["-webkit-transform"] = "translateX(-100%)";
-    accounts[i].style["-ms-transform"] = "translateX(-100%)";
-    
-    accounts[i].style.background = "linear-gradient(to right, rgba(200, 30, 30, 0.2) 0%, rgba(255, 100, 100, 0.2) 25%, rgba(255, 100, 100, 0) 100%)";
-  	accounts[i].style.borderBottomLeftRadius = "100px";
-  	accounts[i].style.borderTopLeftRadius = "100px";
-  }
-
-  /* deptContainers are the containers for each dept, including title and info */
-  var deptContainers = document.getElementsByClassName("deptContainer");
-  /*	for (var i=0; i<deptContainers.length; i++) {
-  		deptContainers[i].style. = "";
-  	}*/
-
-  /* deptInfoContainers is where the actual o/c names and times are displayed */
-  var deptInfoContainers = document.getElementsByClassName("deptInfoContainer");
-  for (var i = 0; i < deptInfoContainers.length; i++) {
-    deptInfoContainers[i].style.borderLeft = "8px solid #CCCCCC";
-    deptInfoContainers[i].style.marginLeft = "20px";
-    deptInfoContainers[i].style.paddingLeft = "8px";
-    deptInfoContainers[i].style.color = "#777777";
-  }
-
-  /* deptNames are <h2> tags of department names */
-  var deptNames = document.getElementsByTagName("h2");
-  for (var i = 0; i < deptNames.length; i++) {
-    deptNames[i].style.textShadow = "1px 1px 3px rgba(0,0,0,.4)";
-  }
-
-  /* providerNames are the provider names */
-  var providerNames = document.getElementsByClassName("providerName");
-  for (var i = 0; i < providerNames.length; i++) {
-    providerNames[i].style.fontWeight = "bold";
-    providerNames[i].style.color = "#AA4444";
-  }
-
-  /* the o/c time */
-  var times = document.getElementsByClassName("time");
-  for (var i=0; i<times.length; i++) {
-  	times[i].style.color = "black";
-  }
 }
 
 })();
