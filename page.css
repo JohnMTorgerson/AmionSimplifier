@@ -54,8 +54,8 @@ body {
   top: 0px;
   font-size: 5em;
   color: rgba(0, 0, 0, .2);
-  -ms-transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1); /* IE 9 */
-  transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1);
+  -ms-transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1.5); /* IE 9 */
+  transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1.5);
   z-index: 0;
   animation-name: arrow;
   animation-duration: 2s;
