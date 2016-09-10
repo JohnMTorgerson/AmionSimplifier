@@ -20,6 +20,8 @@ body {
 /* box with border */
 #linkBox {
   position: relative;
+  max-width: 400px;
+  margin: 0 auto;
   border-radius: 30px;
   border: 8px dashed rgba(100, 0, 0, .4);
   background-color: rgba(100, 100, 255, .2);
