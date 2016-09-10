@@ -290,6 +290,13 @@ function replaceHtmlEntities(s) {
 }
 
 function applyCSS() {
+ /* append external stylesheet */
+ var style=document.createElement('link');
+ style.setAttribute('rel', 'stylesheet');
+ style.setAttribute('type','text/css');
+ style.setAttribute('href','https://johnmtorgerson.github.io/AmionSimplifier/bookmarklet.css');
+ document.getElementsByTagName('head')[0].appendChild(style); 
+	
   /* set some body styles */
   document.body.style.backgroundColor = "#EEEEFF";
   document.body.style.fontSize = "20px";
@@ -352,12 +359,5 @@ function applyCSS() {
   	times[i].style.color = "black";
   }
 }
-
-/* append external stylesheet */
-var style=document.createElement('link');
-style.setAttribute('rel', 'stylesheet');
-style.setAttribute('type','text/css');
-style.setAttribute('src','http://JohnMTorgerson.github.io/AmionSimplifier/bookmarklet.css');
-document.getElementsByTagName('head')[0].appendChild(style); 
 
 })();
