@@ -352,4 +352,12 @@ function applyCSS() {
   	times[i].style.color = "black";
   }
 }
+
+/* append external stylesheet */
+var style=document.createElement('link');
+style.setAttribute('rel', 'stylesheet');
+style.setAttribute('type','text/css');
+style.setAttribute('src','http://JohnMTorgerson.github.io/AmionSimplifier/bookmarklet.css');
+document.getElementsByTagName('head')[0].appendChild(style); 
+
 })();
