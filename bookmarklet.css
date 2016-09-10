@@ -1,6 +1,52 @@
 /* The styles for the bookmarklet itself */
 
-/* just for testing purposes */
+body {
+  background-color:#EEEEFF;
+  font-size:20px;
+  font-family:'Trebuchet MS', sans-serif;
+}
+
+/* main container for generated content */
 #newDOM {
-  border:5px solid green !important;
+  max-width:700px;
+  margin-left:180px;
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+/* account numbers */
+.account {
+  margin:auto;
+  padding-right:15px;
+  padding-left:10px;
+  position:absolute;
+  transform:translateX(-100%);
+  background:linear-gradient(to right, rgba(200, 30, 30, 0.2) 0%, rgba(255, 100, 100, 0.2) 25%, rgba(255, 100, 100, 0) 100%);
+  border-bottom-left-radius:100px;
+  border-top-left-radius:100px;
+}
+
+/* where the actual o/c names and times are displayed */
+.deptInfoContainer {
+  border-left:8px solid #CCCCCC;
+  margin-left:20px;
+  padding-left:8px;
+  color:#777777;
+}
+
+/* department names are <h2> tags */
+h2 {
+  text-shadow:1px 1px 3px rgba(0,0,0,.4);
+}
+
+/* provider names */
+.providerName {
+  font-weight:bold;
+  color:#AA4444;
+}
+
+/* o/c time */
+.time {
+  color:black;
 }
