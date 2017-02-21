@@ -135,8 +135,8 @@ function formatInfo(name, info) {
     case "Hematology/Oncology":
       /* if we pass an array of strings into findInfoCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-      container.appendChild(findInfoCat(info, ["HemOnc 1st Call Weekday (5p-830a)", "HemOnc 1st Call Weekend (830a-830a)"], ""));
-      container.appendChild(findInfoCat(info, "HemOnc 2nd Call Weekday (5p-830a)", "Backup"));
+      container.appendChild(findInfoCat(info, ["Mpls 1st Call Night (5p-830a)", "1st Call Weekend (830a-830a)"], ""));
+      container.appendChild(findInfoCat(info, "Mpls 2nd Call Night (5p-830a)", "Backup"));
       break;
     case "Hospitalists":
       /* these are always the same, (and don't appear as such in Amion) so we just hard code them */
