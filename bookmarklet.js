@@ -156,8 +156,8 @@ function formatInfo(name, info) {
       container.appendChild(findInfoCat(info, "Children's Neurosurgery Night 1st Call", ""));
       break;
     case "Orthopedic Surgery":
-      container.appendChild(findInfoCat(info, "CHC Mpls Campus Sun-Sat", "Mpls"));
-      container.appendChild(findInfoCat(info, "CHC St. Paul Campus Sun-Sat", "St Paul"));
+      container.appendChild(findInfoCat(info, "Mpls Second Call Sun-Sat", "Mpls"));
+      container.appendChild(findInfoCat(info, "St. Paul Campus Sun-Sat", "St Paul"));
       break;
     case "Pain/Palliative Care":
       container.appendChild(findInfoCat(info, "Mpls Rounder 1st call (8a-430p)", "Mpls"));
