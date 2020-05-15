@@ -1,7 +1,7 @@
 javascript: (function() {
 /* first, create the list of departments we want to display */
 var whitelist = {
-  "Adolescent Med/Gynecology": "3548",
+  "Gynecology": "3548",
   "Critical Care/Pulmonology": "7633",
   "Endocrinology": "3537",
   "Genetics": "3549",
@@ -67,24 +67,25 @@ for (var i = 0; i < departments.length; i++) { /* loop through all departments *
     /* create DOM elements to display this department */
 
     /* create container div */
-    var container = document.createElement("div");
-    container.className = "deptContainer";
+    var container = document.createElement("section");
+    container.className = "department";
 
     /* add account number in <h2> tag */
-    var accountTag = document.createElement("h2");
-    accountTag.className = "account";
+    var accountTag = document.createElement("h1");
+    accountTag.className = "dept-number";
     accountTag.appendChild(document.createTextNode(whitelist[name]));
 
     /* add dept name in <h2> tag */
-    var nameTag = document.createElement("h2");
+    var nameTag = document.createElement("h1");
+    nameTag.className = "dept-name";
     nameTag.appendChild(document.createTextNode(name));
 
     /* append all the elements to container, and add to DOM */
     container.appendChild(accountTag);
     container.appendChild(nameTag);
-    container.appendChild(formatInfo(name, info));
+    container.appendChild(findEntries(name, info));
     /* create table and add info elements to it */
-    /*            var table = document.createElement("table"); 
+    /*            var table = document.createElement("table");
                 for (var j=0; j<info.length; j++) {
                   table.appendChild(info[j]);
                 }
@@ -103,116 +104,121 @@ applyCSS();
 
 /* ------------------------------------------------------------------------------ */
 
-function formatInfo(name, info) {
+function findEntries(name, info) {
   /* <name> is a string (the name of the department) */
   /* <info> is an array of DOM elements (<tr> tags) */
 
   var container = document.createElement("div");
-  container.className = "deptInfoContainer";
+  container.className = "dept-info";
+  var entries = []; /* will store all found and formatted entries in this array */
 
   switch (name) {
     /* ----- Childrens groups ----- */
     case "Adolescent Med/Gynecology":
-      container.appendChild(findInfoCat(info, "Gynecology - Medical Day", ""));
-      container.appendChild(findInfoCat(info, "Gynecology - Medical Night", ""));
-      container.appendChild(findInfoCat(info, "", "", 1)); /* sometimes there's a 10p-8a person, and no search text */
+      entries = entries.concat(findEntryByCat(info, "Gynecology - Medical Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Gynecology - Medical Night", ""));
+      entries = entries.concat(findEntryByCat(info, "", "", 1)); /* sometimes there's a 10p-8a person, and no search text */
       break;
     case "Critical Care/Pulmonology":
-      container.appendChild(findInfoCat(info, "Pulm-Ward NIGHT CALL (5p-8a)", ""));
-      container.appendChild(findInfoCat(info, "Pulm Backup call (5p-8a)", "Backup"));
+      entries = entries.concat(findEntryByCat(info, "Pulm-Ward NIGHT CALL (5p-8a)", ""));
+      entries = entries.concat(findEntryByCat(info, "Pulm Backup call (5p-8a)", "Backup"));
       /* still need to add day people here for the weekend */
       break;
     case "Endocrinology":
-      /* if we pass an array of strings into findInfoCat() instead of just a string, */
+      /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-    	container.appendChild(findInfoCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend"], ""));
-      container.appendChild(findInfoCat(info, "Endocrine Diabetes Day", ""));
-      container.appendChild(findInfoCat(info, "Endocrine Diabetes Night", "Providers only"));
+    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend"], ""));
+      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Providers only"));
       break;
     case "Genetics":
-      container.appendChild(findInfoCat(info, "Genetics MD", ""));
+      entries = entries.concat(findEntryByCat(info, "Genetics MD", ""));
       break;
     case "Hematology/Oncology":
-      /* if we pass an array of strings into findInfoCat() instead of just a string, */
+      /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-      container.appendChild(findInfoCat(info, ["Mpls 1st Call Night (5p-830a)", "1st Call Weekend (830a-830a)"], ""));
-      container.appendChild(findInfoCat(info, "Mpls  2nd Call Night (5p-830a)", "Backup"));
+      entries = entries.concat(findEntryByCat(info, ["Mpls 1st Call Night (5p-830a)", "1st Call Weekend (830a-830a)"], ""));
+      entries = entries.concat(findEntryByCat(info, "Mpls  2nd Call Night (5p-830a)", "Backup"));
       break;
     case "Hospitalists":
       /* these are always the same, (and don't appear as such in Amion) so we just hard code them */
-      container.appendChild(formatText("12a-12a", "Hospitalist Mpls", ""));
-      container.appendChild(formatText("12a-12a", "Hospitalist St Paul", ""));
+      entries.push(formatEntry("12a-12a", "Hospitalist Mpls", ""));
+      entries.push(formatEntry("12a-12a", "Hospitalist St Paul", ""));
       break;
     case "ID/Immuno/Inf. Control":
-      container.appendChild(findInfoCat(info, "ID Mpls", "Mpls"));
-      container.appendChild(findInfoCat(info, "ID St Paul", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, "ID Mpls", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "ID St Paul", "St Paul"));
       break;
     case "Neurology - St. Paul Children's":
-      container.appendChild(findInfoCat(info, "St. Paul Children's Neurology Day- 1st Call", ""));
-      container.appendChild(findInfoCat(info, "St. Paul Children's Neuro Night", ""));
+      entries = entries.concat(findEntryByCat(info, "St. Paul Children's Neurology Day- 1st Call", ""));
+      entries = entries.concat(findEntryByCat(info, "St. Paul Children's Neuro Night", ""));
       break;
     case "Neurosurgery":
-      container.appendChild(findInfoCat(info, "Children's Neurosurgery - Consults Mpls & St. Paul", ""));
-      container.appendChild(findInfoCat(info, "Children's Neurosurgery Night 1st Call", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - Consults Mpls & St. Paul", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery Night 1st Call", ""));
       break;
     case "Orthopedic Surgery":
-      container.appendChild(findInfoCat(info, "Mpls Second Call Sun-Sat", "Mpls"));
-      container.appendChild(findInfoCat(info, "St. Paul Campus Sun-Sat", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, "Mpls Second Call Sun-Sat", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "St. Paul Campus Sun-Sat", "St Paul"));
       break;
     case "Pain/Palliative Care":
-      container.appendChild(findInfoCat(info, "Mpls Rounder 1st call (8a-430p)", "Mpls"));
-      container.appendChild(findInfoCat(info, "St. Paul 1st Call (8a-430p)", "St Paul"));
-      container.appendChild(findInfoCat(info, ["Weeknight 1st call (Mon-Th 4:30p-8a)", "Weekend Call (Fri 4:30p - Mon 8a)"], ""));
+      entries = entries.concat(findEntryByCat(info, "Mpls Rounder 1st call (8a-430p)", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "St. Paul 1st Call (8a-430p)", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, ["Weeknight 1st call (Mon-Th 4:30p-8a)", "Weekend Call (Fri 4:30p - Mon 8a)"], ""));
       break;
     case "Pediatrics Clinic - Minneapolis":
-      container.appendChild(findInfoCat(info, "MCC Outpatient On Call", ""));
+      entries = entries.concat(findEntryByCat(info, "MCC Outpatient On Call", ""));
       break;
     case "Pediatrics Clinic - St. Paul":
-      container.appendChild(findInfoCat(info, "Children's St. Paul Outpt - Day", ""));
-      container.appendChild(findInfoCat(info, "Children's St. Paul Outpt - Night", ""));
-      container.appendChild(findInfoCat(info, "Children's St Paul Outpt - Wknd", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's St. Paul Outpt - Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's St. Paul Outpt - Night", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's St Paul Outpt - Wknd", ""));
       break;
-      
+
     /* ----- Hudson ----- */
     case "Hospital Services":
-    	container.appendChild(findInfoCat(info, "OB-Gyn Consult", "OB/Gyn"));
-    	container.appendChild(findInfoCat(info, "Midwife", "Midwife"));
-    	container.appendChild(findInfoCat(info, "FM - OB Call", "FM/OB"));
+    	entries = entries.concat(findEntryByCat(info, "OB-Gyn Consult", "OB/Gyn"));
+    	entries = entries.concat(findEntryByCat(info, "Midwife", "Midwife"));
+    	entries = entries.concat(findEntryByCat(info, "FM - OB Call", "FM/OB"));
 			break;
     case "HP Clinic":
-    	container.appendChild(findInfoCat(info, "Adult Call 8a-8a", "Adults"));
-    	container.appendChild(findInfoCat(info, "Pediatric Call 8a-8a", "Peds"));
-    	container.appendChild(findInfoCat(info, "Surgeon- 5a to 5p", "Surgery"));
-    	container.appendChild(findInfoCat(info, "Surgeon II 5 p -5 a", "Surgery"));
-    	container.appendChild(findInfoCat(info, "Weekend Rounding Surgeon", "Surgery"));
+    	entries = entries.concat(findEntryByCat(info, "Adult Call 8a-8a", "Adults"));
+    	entries = entries.concat(findEntryByCat(info, "Pediatric Call 8a-8a", "Peds"));
+    	entries = entries.concat(findEntryByCat(info, "Surgeon- 5a to 5p", "Surgery"));
+    	entries = entries.concat(findEntryByCat(info, "Surgeon II 5 p -5 a", "Surgery"));
+    	entries = entries.concat(findEntryByCat(info, "Weekend Rounding Surgeon", "Surgery"));
       break;
     default:
       /* do nothing */
       ;
   }
+  /* loop through all found entries and add them to the container */
+  for (let i=0; i<entries.length; i++) {
+    container.appendChild(entries[i]);
+  }
   return container;
 }
 
-/* return the o/c time and o/c provider name, given a department category */
-/* 'test' can be either a string or an array of strings; if array, test for match with any of the strings therein */
+/* return the o/c time and o/c provider name, given an and an array of DOM elements for a department, and a category within that department  */
+/* 'deptCategories' can be either a string or an array of strings; if array, test for match with any of the strings therein */
 /* 'descrip' is a string which is a manually coded description of the position we're searching for, to display (e.g. 'Backup' or 'St Paul') */
 /* 'occurrence' specifies which occurrence of the test string to return (0 being the first), in case there are more than one */
-function findInfoCat(infoArray, test, descrip, occurrence) {
-  if (typeof test === 'string') {
-    test = [test];
+function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
+  if (typeof deptCategories === 'string') {
+    deptCategories = [deptCategories];
   } /* convert string to array of string */
-  
+
   /* an array into which we'll put any matches we find */
   var matches = [];
 
-  /* loop through the test array and add any matches into the array */
+  /* loop through the deptCategories array and add any matches into the array */
   var matchCount = 0;
-  for (var i = 0; i < test.length; i++) {
-    for (var j = 0; j < infoArray.length; j++) {
-      var teeArrr = infoArray[j];
+  for (var i = 0; i < deptCategories.length; i++) {
+    for (var j = 0; j < deptRowElements.length; j++) {
+      var teeArrr = deptRowElements[j];
       var catString = findText(teeArrr.children[1]);
       /*console.log(catString);*/
-      if (catString == test[i]) {
+      if (catString == deptCategories[i]) {
       	/* if matchCount == occurrence, then this is the occurrence we want,
         	 or if occurrence is undefined, we don't care which occurrence this is,
            so either way, we want to package it */
@@ -220,7 +226,7 @@ function findInfoCat(infoArray, test, descrip, occurrence) {
           var time = findText(teeArrr.children[2]);
           var name = findText(teeArrr.children[3]);
           if (name != "--") { /* as long as the name isn't blank */
-            matches.push(formatText(time, name, descrip)); /* package result and add it to 'matches' array */
+            matches.push(formatEntry(time, name, descrip)); /* package result and add it to 'matches' array */
           }
         }
       	/* increment matchCount */
@@ -228,15 +234,17 @@ function findInfoCat(infoArray, test, descrip, occurrence) {
       }
     }
   }
-  
+
   /* wrap all our results into a container */
-  var container = document.createElement("span");
+  /*var container = document.createElement("span");
   for (var i=0; i<matches.length; i++) {
   	container.appendChild(matches[i]);
   }
 
 	/* return all the results in the container */
-  return container;
+  /*return container;*/
+
+  return matches;
 }
 
 /* given an html heirarchy, return only the plain-text within it */
@@ -244,29 +252,30 @@ function findText(theNode) {
   return replaceHtmlEntities(theNode.innerHTML.replace(/<(?:.|\n)*?>/gm, '')).replace(/(^\s+|\s+$)/g, '');
 }
 
-/* simply format the on call provider string in a <p> tag */
-function formatText(field1, field2, field3) {
+/* format the on call provider string in a <div> */
+function formatEntry(field1, field2, field3) {
   if (field2 === undefined) {
     field2 = "";
   }
   if (field3 != "") { /* if there's anything here, add parentheses */
   	field3 = "(" + field3 + ")";
   }
-  
+
   var time = document.createTextNode(field1 + " ");
   var name = document.createTextNode(field2);
   var descrip = document.createTextNode(" " + field3);
-  var timeNode = document.createElement("span");
-  var nameNode = document.createElement("span");
+  var timeNode = document.createElement("time");
+  var nameNode = document.createElement("summary");
   var descripNode = document.createElement("span");
   timeNode.appendChild(time);
   nameNode.appendChild(name);
   descripNode.appendChild(descrip);
   timeNode.className = "time";
-  nameNode.className = "providerName";
+  nameNode.className = "provider-name";
   descripNode.className = "description";
 
-  var result = document.createElement("p");
+  var result = document.createElement("div");
+  result.className = "call-entry";
   result.appendChild(timeNode);
   result.appendChild(nameNode);
   result.appendChild(descripNode);
@@ -295,7 +304,7 @@ function applyCSS() {
  style.setAttribute('rel', 'stylesheet');
  style.setAttribute('type','text/css');
  style.setAttribute('href','https://johnmtorgerson.github.io/AmionSimplifier/bookmarklet.css');
- document.getElementsByTagName('head')[0].appendChild(style); 
+ document.getElementsByTagName('head')[0].appendChild(style);
 }
 
 })();

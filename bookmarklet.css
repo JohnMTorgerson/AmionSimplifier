@@ -1,19 +1,30 @@
 /* The styles for the bookmarklet itself */
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto+Mono:wght@300&display=swap');
+
+:root {
+  --box-padding: 20px;
+  --hor-margin: 0.5em;
+}
+
 body {
-  background-color:#EEEEFF;
+  margin:0px;
+  background-color:#151515;
+  color:#CCCCCC;
   font-size:20px;
-  font-family:'Trebuchet MS', sans-serif;
+  font-family:'Montserrat', sans-serif;
 }
 
 /* main container for generated content */
 #newDOM {
-  min-width:500px;
+  display:grid;
+  grid-template-columns: auto auto;
+/*  min-width:500px;
   padding-left:100px;
-	position:absolute;
+	position:absolute;*/
 }
   /* center the container until the screen gets too small */
-  @media (max-width: 599px) {
+  /*@media (max-width: 599px) {
   	#newDOM {
   		left:0px;
   	}
@@ -23,40 +34,74 @@ body {
   		left:50%;
     	transform:translateX(-50%);
   	}
-  }
+  }*/
+
+/* container for each department */
+.department {
+  background: linear-gradient(160deg, /*rgba(255,255,255,0.09) 0%,*/ rgba(220,255,220,0.05) 0%, rgba(0,0,0,0) 100%);
+  padding-bottom:var(--box-padding);
+}
 
 /* account numbers */
-.account {
-  margin:auto;
+.dept-number {
+  font-family:'Roboto Mono', sans-serif;
+  opacity:0.6;
+  float:left;
+  margin-right:var(--hor-margin);
+  background: linear-gradient(90deg, rgba(220,100,255,.1) 0%, rgba(220,100,255,.1) 100%);
+
+
+  /*margin:auto;
   padding-right:15px;
   padding-left:10px;
   position:absolute;
   transform:translateX(-100%);
-  background:linear-gradient(to right, rgba(200, 30, 30, 0.2) 0%, rgba(255, 100, 100, 0.2) 25%, rgba(255, 100, 100, 0) 100%);
   border-bottom-left-radius:100px;
-  border-top-left-radius:100px;
+  border-top-left-radius:100px;*/
+  /*background:linear-gradient(to right, rgba(30, 200, 30, 0.1) 0%, rgba(100, 255, 100, 0.1) 25%, rgba(100, 255, 100, 0) 100%);*/
+}
+
+.dept-name {
+  background: linear-gradient(90deg, rgba(255,255,255,.02) 50%, rgba(255,255,255,.05) 100%);
+}
+
+/* department names and account numbers are <h1> tags */
+h1 {
+  text-shadow:1px 1px 3px rgba(0,0,0,.4);
+  font-weight:lighter;
+  line-height:1em;
+  margin:0px;
+  padding:10px;
 }
 
 /* where the actual o/c names and times are displayed */
-.deptInfoContainer {
-  border-left:8px solid #CCCCCC;
+/* .dept-info is the parent of .call-entry, and sister to the dept-name and account-number h1's */
+.dept-info {
+  border-left:8px solid #333333;
   margin-left:20px;
-  padding-left:8px;
-  color:#777777;
+  margin-top: var(--box-padding);
+  color:#888888;
 }
 
-/* department names are <h2> tags */
-h2 {
-  text-shadow:1px 1px 3px rgba(0,0,0,.4);
+/* parent div of .provider-name, .time, and .description */
+.call-entry {
+  display:flex;
+}
+
+.provider-name, .time, .description {
+  margin-left:var(--hor-margin);
 }
 
 /* provider names */
-.providerName {
-  font-weight:bold;
-  color:#AA4444;
+.provider-name {
+  color:#99B090;
 }
 
 /* o/c time */
 .time {
-  color:black;
+  color:#999999;
+}
+
+.description {
+  color:#666666;
 }
