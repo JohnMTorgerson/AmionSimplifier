@@ -21,6 +21,28 @@ var whitelist = {
   "HP Clinic": "3505" */
 };
 
+/* For some clinics we want to display a different name than Amion shows */
+function displayName(name) {
+  var displayNames = {
+    "Critical Care/Pulmonology": "Resp & Critical Care",
+    "Hematology/Oncology": "Cancer & Blood",
+    "ID/Immuno/Inf. Control": "Infectious Disease",
+    "Pediatrics Clinic - Minneapolis": "Mpls Clinic",
+    "Pediatrics Clinic - St. Paul": "St Paul Clinic",
+    "Neurology - St. Paul Children's": "Neurology",
+    "Orthopedic Surgery": "Orthopedics",
+    "Surgical Specialties": "Ortho (Plastic)",
+    "Pain/Palliative Care": "Pain Team",
+    "Trauma Service": "PSA Surgery",
+    "Urology": "PSA Urology"
+  };
+
+  if (name in displayNames) {
+    return displayNames[name];
+  }
+  return name;
+}
+
 /* now, scrape the page to get the departments */
 var mainTable = document.getElementsByTagName("table")[1];
 var rows = mainTable.children[0].children;
@@ -73,6 +95,8 @@ for (var i = 0; i < departments.length; i++) { /* loop through all departments *
     /* create container div */
     var container = document.createElement("section");
     container.className = "department";
+    container.id = name.replace(/\W+/g, ""); /* Create id out of the dept name but with no punctuation */
+    console.log(container.id);
 
     /* add account number in <h2> tag */
     var accountTag = document.createElement("h1");
@@ -82,7 +106,7 @@ for (var i = 0; i < departments.length; i++) { /* loop through all departments *
     /* add dept name in <h2> tag */
     var nameTag = document.createElement("h1");
     nameTag.className = "dept-name";
-    nameTag.appendChild(document.createTextNode(name));
+    nameTag.appendChild(document.createTextNode(displayName(name)));
 
     /* append all the elements to container, and add to DOM */
     container.appendChild(accountTag);

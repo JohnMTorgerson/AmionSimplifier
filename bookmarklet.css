@@ -18,23 +18,26 @@ body {
 /* main container for generated content */
 #newDOM {
   display:grid;
-  grid-template-columns: auto auto;
 /*  min-width:500px;
   padding-left:100px;
 	position:absolute;*/
 }
-  /* center the container until the screen gets too small */
-  /*@media (max-width: 599px) {
-  	#newDOM {
-  		left:0px;
-  	}
-  }
-  @media (min-width: 600px) {
-  	#newDOM {
-  		left:50%;
-    	transform:translateX(-50%);
-  	}
-  }*/
+  /* Change the number of columns to two when the screen is narrow */
+@media only screen and (max-width: 1023px) {
+	#newDOM {
+    grid-template-columns: auto;
+	}
+}
+@media only screen and (min-width: 1024px) {
+	#newDOM {
+    grid-template-columns: auto auto;
+	}
+}
+@media only screen and (min-width: 1420px) {
+	#newDOM {
+    grid-template-columns: auto auto auto;
+	}
+}
 
 /* container for each department */
 .department {
@@ -105,3 +108,20 @@ h1 {
 .description {
   color:#666666;
 }
+
+/* Set the display order of all the departments */
+#CriticalCarePulmonology { order:100; }
+#Endocrinology { order:10; }
+#Gynecology { order:20; }
+#HematologyOncology { order:00; }
+#Hospitalists { order:30; }
+#IDImmunoInfControl { order:40; }
+#NeurologyStPaulChildrens { order:60; }
+#Neurosurgery { order:70; }
+#OrthopedicSurgery { order:80; }
+#PainPalliativeCare { order:90; }
+#PediatricsClinicMinneapolis { order:50; }
+#PediatricsClinicStPaul { order:110; }
+#SurgicalSpecialties { order:85; }
+#TraumaService { order:120; }
+#Urology { order:125; }
