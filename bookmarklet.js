@@ -4,18 +4,21 @@ var whitelist = {
   "Gynecology": "3548",
   "Critical Care/Pulmonology": "7633",
   "Endocrinology": "3537",
-  "Genetics": "3549",
+/*  "Genetics": "3549", */
   "Hematology/Oncology": "3525",
   "Hospitalists": "3512",
   "ID/Immuno/Inf. Control": "3533",
+  "Pediatrics Clinic - Minneapolis": "3517",
+  "Pediatrics Clinic - St. Paul": "3516",
   "Neurology - St. Paul Children's": "3566",
   "Neurosurgery": "3561",
   "Orthopedic Surgery": "3541",
+  "Surgical Specialties": "3541",
   "Pain/Palliative Care": "3507",
-  "Pediatrics Clinic - Minneapolis": "3517",
-  "Pediatrics Clinic - St. Paul": "3516",
-  "Hospital Services": "3505",
-  "HP Clinic": "3505"
+  "Trauma Service": "7634",
+  "Urology": "7634",
+/*  "Hospital Services": "3505",
+  "HP Clinic": "3505" */
 };
 
 /* now, scrape the page to get the departments */
@@ -37,7 +40,8 @@ for (var i = 0; i < rows.length; i++) {
     deptRows = [];
 
     /* get the name of this department and save it in 'dept' */
-    var deptName = rowTitle.children.length > 0 ? rowTitle.children[0].innerHTML : rowTitle.innerHTML; /* some rows have a <small> tag inside the <a> */
+    var deptName = findText(rowTitle.innerHTML);
+    /*var deptName = rowTitle.children.length > 0 ? rowTitle.children[0].innerHTML : rowTitle.innerHTML;*/ /* some rows have a <small> tag inside the <a> */
     deptName = deptName.replace(/&nbsp;/g, " "); /* get rid of '&nbsp;' */
     dept["name"] = deptName;
   }
@@ -114,15 +118,17 @@ function findEntries(name, info) {
 
   switch (name) {
     /* ----- Childrens groups ----- */
-    case "Adolescent Med/Gynecology":
-      entries = entries.concat(findEntryByCat(info, "Gynecology - Medical Day", ""));
-      entries = entries.concat(findEntryByCat(info, "Gynecology - Medical Night", ""));
+    case "Gynecology":
+      entries = entries.concat(findEntryByCat(info, "Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Night", ""));
       entries = entries.concat(findEntryByCat(info, "", "", 1)); /* sometimes there's a 10p-8a person, and no search text */
       break;
     case "Critical Care/Pulmonology":
-      entries = entries.concat(findEntryByCat(info, "Pulm-Ward NIGHT CALL (5p-8a)", ""));
-      entries = entries.concat(findEntryByCat(info, "Pulm Backup call (5p-8a)", "Backup"));
-      /* still need to add day people here for the weekend */
+      entries = entries.concat(findEntryByCat(info, "Outpatient Calls (wknd-hol) 8a-5p", "Outpatient Calls"));
+      entries = entries.concat(findEntryByCat(info, "Mpls Ward-Pulm (8a-5p)", "Mpls Inpatient"));
+      entries = entries.concat(findEntryByCat(info, "SP Ward-Pulm (8a-5p)", "St Paul Inpatient"));
+      entries = entries.concat(findEntryByCat(info, "Pulmonary NIGHT CALL (5p-8a)", "Pulm Evening"));
+      entries = entries.concat(findEntryByCat(info, "Pulm Backup night call (5p-8a)", "Pulm Evening Backup"));
       break;
     case "Endocrinology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
@@ -137,8 +143,9 @@ function findEntries(name, info) {
     case "Hematology/Oncology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-      entries = entries.concat(findEntryByCat(info, ["Mpls 1st Call Night (5p-830a)", "1st Call Weekend (830a-830a)"], ""));
-      entries = entries.concat(findEntryByCat(info, "Mpls  2nd Call Night (5p-830a)", "Backup"));
+      entries = entries.concat(findEntryByCat(info, ["1st Call Night", "1st Call Weekend"], "1st Call"));
+      entries = entries.concat(findEntryByCat(info, "", "1st Call")); /* on the weekends the 5p person is listed with no search text */
+      entries = entries.concat(findEntryByCat(info, ["2nd Call Night", "2nd Call Weekend"], "2nd Call"));
       break;
     case "Hospitalists":
       /* these are always the same, (and don't appear as such in Amion) so we just hard code them */
@@ -147,22 +154,33 @@ function findEntries(name, info) {
       break;
     case "ID/Immuno/Inf. Control":
       entries = entries.concat(findEntryByCat(info, "ID Mpls", "Mpls"));
-      entries = entries.concat(findEntryByCat(info, "ID St Paul", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, "ID St. Paul", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, "Evening Urgent Immunology Consult", "Immunology Consult"));
       break;
     case "Neurology - St. Paul Children's":
-      entries = entries.concat(findEntryByCat(info, "St. Paul Children's Neurology Day- 1st Call", ""));
-      entries = entries.concat(findEntryByCat(info, "St. Paul Children's Neuro Night", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurology-Noran Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurology-Noran Night", ""));
       break;
     case "Neurosurgery":
-      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - Consults Mpls & St. Paul", ""));
-      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery Night 1st Call", ""));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - MPLS Inpatients & New Con...", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - STP Inpatients & New Cons...", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - Night 1st Call", "1st Call"));
+      entries = entries.concat(findEntryByCat(info, "Children's Neurosurgery - Night 2nd Call (MD)", "2nd Call"));
       break;
     case "Orthopedic Surgery":
-      entries = entries.concat(findEntryByCat(info, "Mpls Second Call Sun-Sat", "Mpls"));
-      entries = entries.concat(findEntryByCat(info, "St. Paul Campus Sun-Sat", "St Paul"));
+      entries = entries.concat(findEntryByCat(info, ["Mpls FIRST CALL Mon-Fri 8a-5p","Mpls FIRST CALL Fellow & Resident S & S"], "Mpls 1st Call"));
+      entries = entries.concat(findEntryByCat(info, "", "Mpls 1st Call",0)); /* in the case of a split shift, empty search string, first occurrence */
+      entries = entries.concat(findEntryByCat(info, "Mpls SECOND CALL Ortho MD", "Mpls 2nd Call"));
+      entries = entries.concat(findEntryByCat(info, "", "Mpls 2nd Call",1)); /* in the case of a split shift, empty search string, second occurrence */
+      entries = entries.concat(findEntryByCat(info, "St. Paul Campus Ortho MD", "St Paul"));
+/*      entries = entries.concat(findEntryByCat(info, "Mpls Second Call Sun-Sat", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "St. Paul Campus Sun-Sat", "St Paul"));*/
+      break;
+    case "Surgical Specialties":
+      entries = entries.concat(findEntryByCat(info, "Twin Cities Plastic Surgery (Minneapolis Only)", "Plastic Surgery"));
       break;
     case "Pain/Palliative Care":
-      entries = entries.concat(findEntryByCat(info, "Mpls Rounder 1st call (8a-430p)", "Mpls"));
+      entries = entries.concat(findEntryByCat(info, "Mpls Rounder 1st Call New Consults (8a-430p)", "Mpls"));
       entries = entries.concat(findEntryByCat(info, "St. Paul 1st Call (8a-430p)", "St Paul"));
       entries = entries.concat(findEntryByCat(info, ["Weeknight 1st call (Mon-Th 4:30p-8a)", "Weekend Call (Fri 4:30p - Mon 8a)"], ""));
       break;
@@ -170,10 +188,20 @@ function findEntries(name, info) {
       entries = entries.concat(findEntryByCat(info, "MCC Outpatient On Call", ""));
       break;
     case "Pediatrics Clinic - St. Paul":
-      entries = entries.concat(findEntryByCat(info, "Children's St. Paul Outpt - Day", ""));
+      entries = entries.concat(findEntryByCat(info, "Doc of the Day", ""));
       entries = entries.concat(findEntryByCat(info, "Children's St. Paul Outpt - Night", ""));
       entries = entries.concat(findEntryByCat(info, "Children's St Paul Outpt - Wknd", ""));
       break;
+    case "Trauma Service":
+      entries = entries.concat(findEntryByCat(info, "Trauma Surgery DAY (NO GEN SURG CALLS)", "Surgery"));
+      entries = entries.concat(findEntryByCat(info, "Trauma Surgery NIGHT (NO GEN SURG CALLS)", "Surgery"));
+      entries = entries.concat(findEntryByCat(info, ["Trauma Surgery DAY Back-up (NO GEN SURG CALLS)","Trauma Surgery NIGHT Back-up (NO GEN SURG CALLS), 5..."], "Backup Surgery"));
+      break;
+    case "Urology":
+      entries = entries.concat(findEntryByCat(info, "PSA Urology OUTSIDE MD Consults (Call First)", "")); /* 8a-5p */
+      entries = entries.concat(findEntryByCat(info, "PSA Urology OUTSIDE MD Consults", "")); /* 5p on */
+      break;
+
 
     /* ----- Hudson ----- */
     case "Hospital Services":
@@ -249,7 +277,12 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
 
 /* given an html heirarchy, return only the plain-text within it */
 function findText(theNode) {
-  return replaceHtmlEntities(theNode.innerHTML.replace(/<(?:.|\n)*?>/gm, '')).replace(/(^\s+|\s+$)/g, '');
+  /* console.log(theNode + " (" + typeof theNode + ")"); */
+  theNode = theNode.innerHTML === undefined ? theNode : theNode.innerHTML;
+  /* console.log("now: " + typeof theNode); */
+  var text = replaceHtmlEntities(theNode.replace(/<(?:.|\n)*?>/gm, '')).replace(/(^\s+|\s+$)/g, '');
+  /* console.log("finally: " + text); */
+  return text;
 }
 
 /* format the on call provider string in a <div> */
