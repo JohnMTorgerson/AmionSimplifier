@@ -1,12 +1,12 @@
 /* The style for index.html (the 'install' page on github-pages) */
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto+Mono:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto+Mono:wght@500&display=swap');
 
 body {
   margin:0px;
   background-color:#151515;
   color:#CCCCCC;
-  font-size:20px;
+  font-size:30px;
   font-family:'Montserrat', sans-serif;
 }
 
@@ -23,10 +23,10 @@ body {
 /* box with border */
 #linkBox {
   position: relative;
-  width:300px;
+  width:400px;
   margin: 0 auto;
   border-radius: 30px;
-  border: 4px dotted rgba(220, 255, 220, .4);
+  border: 4px dotted rgba(200, 255, 200, .5);
   background-color: rgba(70, 70, 70, .5);
 /*  box-shadow: -5px 5px 20px rgba(255, 255, 255, .1);*/
 }
@@ -73,12 +73,12 @@ body {
 @keyframes arrow {
   from {
     opacity: 0;
-    top: 20%;
+    top: 10%;
     font-size:5em;
   }
   to {
     opacity: 1;
-    top: -40%;
+    top: -50%;
     font-size:4em;
   }
 }
