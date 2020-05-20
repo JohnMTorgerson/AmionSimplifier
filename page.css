@@ -1,10 +1,13 @@
 /* The style for index.html (the 'install' page on github-pages) */
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto+Mono:wght@300&display=swap');
+
 body {
-  background-color: #F2F2F2;
-  font-family: 'Trebuchet MS', sans-serif;
-  font-size: 30px;
-  font-weight: bold;
+  margin:0px;
+  background-color:#151515;
+  color:#CCCCCC;
+  font-size:20px;
+  font-family:'Montserrat', sans-serif;
 }
 
 /* outer container */
@@ -20,12 +23,12 @@ body {
 /* box with border */
 #linkBox {
   position: relative;
-  max-width: 400px;
+  width:300px;
   margin: 0 auto;
   border-radius: 30px;
-  border: 8px dashed rgba(100, 0, 0, .4);
-  background-color: rgba(100, 100, 255, .2);
-  box-shadow: -5px 5px 20px rgba(0, 0, 0, .6);
+  border: 4px dotted rgba(220, 255, 220, .4);
+  background-color: rgba(70, 70, 70, .5);
+/*  box-shadow: -5px 5px 20px rgba(255, 255, 255, .1);*/
 }
 
 /* <a> tag within linkBox will take up whole box, text will be invisible */
@@ -44,6 +47,7 @@ body {
 
 /* the text we DO want to display in the linkBox */
 #linkText {
+  font-family:'Roboto Mono', sans-serif;	
   position: relative;
   margin: 20px;
   z-index: 1;
@@ -54,25 +58,28 @@ body {
   position: absolute;
   left: 50%;
   top: 0px;
-  font-size: 4em;
-  color: rgba(0, 0, 0, .2);
+  font-size: 5em;
+  color: rgba(255, 255, 255, .5);
   -ms-transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1.5); /* IE 9 */
   transform: translateX(-50%) translateY(-30%) rotate(-90deg) scale(1,1.5);
   z-index: 0;
   animation-name: arrow;
   animation-duration: 2s;
   animation-iteration-count: infinite;
+  animation-timing-function: ease;
 }
 
 /* arrow animation */
 @keyframes arrow {
   from {
     opacity: 0;
-    top: 40%;
+    top: 20%;
+    font-size:5em;
   }
   to {
     opacity: 1;
     top: -40%;
+    font-size:4em;
   }
 }
 
