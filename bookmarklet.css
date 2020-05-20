@@ -17,10 +17,11 @@ body {
 
 /* main container for generated content */
 #newDOM {
-  display:grid;
-/*  min-width:500px;
-  padding-left:100px;
-	position:absolute;*/
+  /* for IE 11; will get overridden by the grid syntax by real browsers */
+  display: flex;
+  flex-wrap: wrap;
+	
+  display: grid;
 }
   /* Change the number of columns to two when the screen is narrow */
 @media only screen and (max-width: 1023px) {
@@ -41,7 +42,9 @@ body {
 
 /* container for each department */
 .department {
+  flex-basis:500px; /* for IE11 */
   background: linear-gradient(160deg, /*rgba(255,255,255,0.09) 0%,*/ rgba(220,255,220,0.05) 0%, rgba(0,0,0,0) 100%);
+  padding-bottom:20px;
   padding-bottom:var(--box-padding);
 }
 
@@ -50,6 +53,7 @@ body {
   font-family:'Roboto Mono', sans-serif;
   opacity:0.6;
   float:left;
+  margin-right:0.5em;
   margin-right:var(--hor-margin);
   background: linear-gradient(90deg, rgba(220,100,255,.1) 0%, rgba(220,100,255,.1) 100%);
 
@@ -82,6 +86,7 @@ h1 {
 .dept-info {
   border-left:8px solid #333333;
   margin-left:20px;
+  margin-top: 20px;
   margin-top: var(--box-padding);
   color:#888888;
 }
@@ -92,6 +97,7 @@ h1 {
 }
 
 .provider-name, .time, .description {
+  margin-left:0.5em;
   margin-left:var(--hor-margin);
 }
 
