@@ -157,7 +157,7 @@ function findEntries(name, info) {
     case "Endocrinology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend"], ""));
+    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend","Diabetes Outpatient Night & Holiday"], ""));
       entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Day", ""));
       entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Providers only"));
       break;
@@ -167,9 +167,9 @@ function findEntries(name, info) {
     case "Hematology/Oncology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-      entries = entries.concat(findEntryByCat(info, ["1st Call Night", "1st Call Weekend"], "1st Call"));
+      entries = entries.concat(findEntryByCat(info, ["1st Call Night", "1st Call Weekend", "1st Call Holiday", "HemOnc 1st Call Holiday"], "1st Call"));
       entries = entries.concat(findEntryByCat(info, "", "1st Call")); /* on the weekends the 5p person is listed with no search text */
-      entries = entries.concat(findEntryByCat(info, ["2nd Call Night", "2nd Call Weekend"], "2nd Call"));
+      entries = entries.concat(findEntryByCat(info, ["2nd Call Night", "2nd Call Weekend", "2nd Call Holiday", "HemOnc 2nd Call Holiday"], "2nd Call"));
       break;
     case "Hospitalists":
       /* these are always the same, (and don't appear as such in Amion) so we just hard code them */
@@ -268,8 +268,9 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
   for (var i = 0; i < deptCategories.length; i++) {
     for (var j = 0; j < deptRowElements.length; j++) {
       var teeArrr = deptRowElements[j];
-      var catString = findText(teeArrr.children[1]);
-      /*console.log(catString);*/
+      var catString = findText(teeArrr.children[1]); /* grab the string to search out of the HTML */
+      catString = catString.replace(/\s+/gm,' '); /* get rid of any duplicate spaces */
+      console.log(catString);
       if (catString == deptCategories[i]) {
       	/* if matchCount == occurrence, then this is the occurrence we want,
         	 or if occurrence is undefined, we don't care which occurrence this is,
