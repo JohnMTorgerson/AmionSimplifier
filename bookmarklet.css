@@ -16,11 +16,11 @@ body {
 }
 
 /* main container for generated content */
-#newDOM {
+#newContent {
   /* for IE 11; will get overridden by the grid syntax by real browsers */
   display: flex;
   flex-wrap: wrap;
-	
+
   display: grid;
 }
   /* Change the number of columns to two when the screen is narrow */
@@ -38,6 +38,18 @@ body {
 	#newDOM {
     grid-template-columns: auto auto auto;
 	}
+}
+
+#backBtn {
+  cursor: pointer;
+  border:1px solid #CCCCCC;
+  background-color: black;
+  display:inline;
+  padding:3px 10px 3px 10px;
+  border-bottom-left-radius: 10px;
+  position:absolute;
+  top:0px;
+  right:0px;
 }
 
 /* container for each department */

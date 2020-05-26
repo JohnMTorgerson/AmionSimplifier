@@ -1,5 +1,21 @@
 javascript: (function() {
-/* first, create the list of departments we want to display */
+
+/* create a new div to place all our results in */
+var newContent = document.createElement("div");
+newContent.id = "newContent";
+
+/* save the old content so the user can go back to it */
+var oldContent = document.createElement("div");
+oldContent.innerHTML = document.body.innerHTML;
+
+/* create "back" button to undo all the reformatting */
+var backBtn = document.createElement("div");
+backBtn.id = "backBtn";
+backBtn.addEventListener("click",toggleContent);
+backBtn.appendChild(document.createTextNode("Back"));
+newContent.appendChild(backBtn);
+
+/* create the list of departments we want to display */
 var whitelist = {
   "Gynecology": "3548",
   "Critical Care/Pulmonology": "7633",
@@ -82,10 +98,6 @@ for (var i = 0; i < rows.length; i++) {
 dept["info"] = deptRows;
 departments.push(dept);
 
-/* create a div to place all our results in */
-var newDOM = document.createElement("div");
-newDOM.id = "newDOM";
-
 /* the 'departments' array should now contain an object for each department */
 /* each of these objects has a 'name' property and an 'info' property */
 /* the 'info' property contains an array of rows (DOM objects) */
@@ -124,18 +136,18 @@ for (var i = 0; i < departments.length; i++) { /* loop through all departments *
                 for (var j=0; j<info.length; j++) {
                   table.appendChild(info[j]);
                 }
-          /* append them all together under <newDOM> */
+          /* append them all together under <newContent> */
     /*            container.appendChild(table);*/
-    newDOM.appendChild(container);
+    newContent.appendChild(container);
   }
 }
 
 /* empty the document and then add our new stuff */
 document.body.innerHTML = "";
-document.body.appendChild(newDOM);
+document.body.appendChild(newContent);
 
 /* apply css to the new elements */
-applyCSS();
+toggleCSS();
 
 /* ------------------------------------------------------------------------------ */
 
@@ -368,13 +380,36 @@ function replaceHtmlEntities(s) {
   return s.replace(regex, translator);
 }
 
-function applyCSS() {
- /* append external stylesheet */
- var style=document.createElement('link');
- style.setAttribute('rel', 'stylesheet');
- style.setAttribute('type','text/css');
- style.setAttribute('href','https://johnmtorgerson.github.io/AmionSimplifier/bookmarklet.css');
- document.getElementsByTagName('head')[0].appendChild(style);
+function toggleCSS() {
+  /* if there's a style tag called "new-style" already, then we want to remove it */
+  var styleTag = document.getElementById("new-style");
+  if (styleTag) {
+    styleTag.remove();
+  }
+  /* if there's not, then we want to create it */
+  else {
+   /* append external stylesheet */
+   var style=document.createElement('link');
+   style.id = "new-style";
+   style.setAttribute('rel', 'stylesheet');
+   style.setAttribute('type','text/css');
+   style.setAttribute('href','https://johnmtorgerson.github.io/AmionSimplifier/bookmarklet.css');
+   document.getElementsByTagName('head')[0].appendChild(style);
+ }
+}
+
+/* the 'back' button calls this function to get go back to the original page */
+/* oldContent and newContent are defined at the top */
+function toggleContent() {
+  if (document.getElementById("newContent")) {
+    document.body.removeChild(newContent);
+    document.body.appendChild(oldContent);
+  }
+  if (document.getElementById("oldContent")) {
+    document.body.removeChild(oldContent);
+    document.body.appendChild(newContent);
+  }
+  toggleCSS();
 }
 
 })();
