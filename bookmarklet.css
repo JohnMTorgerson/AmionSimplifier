@@ -52,6 +52,10 @@ body {
   right:0px;
 }
 
+#backBtn:hover, #backBtn:active {
+  background-color: #444A44;
+}
+
 /* container for each department */
 .department {
   flex-basis:500px; /* for IE11 */
