@@ -25,17 +25,17 @@ body {
 }
   /* Change the number of columns to two when the screen is narrow */
 @media only screen and (max-width: 1023px) {
-	#newDOM {
+	#newContent {
     grid-template-columns: auto;
 	}
 }
 @media only screen and (min-width: 1024px) {
-	#newDOM {
+	#newContent {
     grid-template-columns: auto auto;
 	}
 }
 @media only screen and (min-width: 1420px) {
-	#newDOM {
+	#newContent {
     grid-template-columns: auto auto auto;
 	}
 }
