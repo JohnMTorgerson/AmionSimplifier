@@ -383,8 +383,9 @@ function replaceHtmlEntities(s) {
 function toggleCSS() {
   /* if there's a style tag called "new-style" already, then we want to remove it */
   var styleTag = document.getElementById("new-style");
-  if (styleTag) {
-    styleTag.remove();
+  if (styleTag !== null) {
+    styleTag.parentNode.removeChild(styleTag); /* IE doesn't have remove() */
+    /* styleTag.remove(); */
   }
   /* if there's not, then we want to create it */
   else {
