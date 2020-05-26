@@ -43,6 +43,13 @@ function displayName(name) {
   return name;
 }
 
+/* get whether it's a weekend or not, because some different rules will apply */
+const text = findText(document.getElementsByTagName("form")[0]);
+/*console.log(text);*/
+const day = text.match(/(Mon|Tue|Thu|Fri|Sat|Sun), (Jan|Feb|Mar|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec) \d{1,2}, \d{4}/);
+const isWeekend = day[1] == "Sat" || day[1] == "Sun" ? true : false;
+/*console.log("Is weekend? " + isWeekend);*/
+
 /* now, scrape the page to get the departments */
 var mainTable = document.getElementsByTagName("table")[1];
 var rows = mainTable.children[0].children;
@@ -96,7 +103,7 @@ for (var i = 0; i < departments.length; i++) { /* loop through all departments *
     var container = document.createElement("section");
     container.className = "department";
     container.id = name.replace(/\W+/g, ""); /* Create id out of the dept name but with no punctuation */
-    console.log(container.id);
+    /*console.log(container.id);*/
 
     /* add account number in <h2> tag */
     var accountTag = document.createElement("h1");
@@ -148,11 +155,16 @@ function findEntries(name, info) {
       entries = entries.concat(findEntryByCat(info, "", "", 1)); /* sometimes there's a 10p-8a person, and no search text */
       break;
     case "Critical Care/Pulmonology":
-      entries = entries.concat(findEntryByCat(info, "Outpatient Calls (wknd-hol) 8a-5p", "Outpatient Calls"));
-      entries = entries.concat(findEntryByCat(info, "Mpls Ward-Pulm (8a-5p)", "Mpls Inpatient"));
-      entries = entries.concat(findEntryByCat(info, "SP Ward-Pulm (8a-5p)", "St Paul Inpatient"));
+      if (isWeekend) {
+        entries = entries.concat(findEntryByCat(info, "Outpatient Calls (wknd-hol) 8a-5p", "Outpatient Calls"));
+        entries = entries.concat(findEntryByCat(info, "Mpls Ward-Pulm (8a-5p)", "Mpls Inpatient"));
+        entries = entries.concat(findEntryByCat(info, "SP Ward-Pulm (8a-5p)", "St Paul Inpatient"));
+      } else {
+        entries.push(formatEntry("8a-8:30a", "CALL BACKLINE", ""));
+        entries.push(formatEntry("4:30p-5p", "CALL BACKLINE", ""));
+      }
       entries = entries.concat(findEntryByCat(info, "Pulmonary NIGHT CALL (5p-8a)", "Pulm Evening"));
-      entries = entries.concat(findEntryByCat(info, "Pulm Backup night call (5p-8a)", "Pulm Evening Backup"));
+      entries = entries.concat(findEntryByCat(info, "Pulm Backup night call (5p-8a)", "Pulm Eve Backup"));
       break;
     case "Endocrinology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
@@ -177,9 +189,9 @@ function findEntries(name, info) {
       entries.push(formatEntry("12a-12a", "Hospitalist St Paul", ""));
       break;
     case "ID/Immuno/Inf. Control":
-      entries = entries.concat(findEntryByCat(info, "ID Mpls", "Mpls"));
-      entries = entries.concat(findEntryByCat(info, "ID St. Paul", "St Paul"));
-      entries = entries.concat(findEntryByCat(info, "Evening Urgent Immunology Consult", "Immunology Consult"));
+      /* entries = entries.concat(findEntryByCat(info, "ID Mpls", "Mpls")); */
+      entries = entries.concat(findEntryByCat(info, "ID St. Paul", "On Call"));
+      entries = entries.concat(findEntryByCat(info, ["Evening Urgent Immunology Consult", "Weekend Urgent Immunology Consult"], "Immunology Consult"));
       break;
     case "Neurology - St. Paul Children's":
       entries = entries.concat(findEntryByCat(info, "Children's Neurology-Noran Day", ""));
@@ -270,7 +282,7 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
       var teeArrr = deptRowElements[j];
       var catString = findText(teeArrr.children[1]); /* grab the string to search out of the HTML */
       catString = catString.replace(/\s+/gm,' '); /* get rid of any duplicate spaces */
-      console.log(catString);
+      /*console.log(catString);*/
       if (catString == deptCategories[i]) {
       	/* if matchCount == occurrence, then this is the occurrence we want,
         	 or if occurrence is undefined, we don't care which occurrence this is,
