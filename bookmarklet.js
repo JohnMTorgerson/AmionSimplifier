@@ -62,7 +62,7 @@ function displayName(name) {
 /* get whether it's a weekend or not, because some different rules will apply */
 const text = findText(document.getElementsByTagName("form")[0]);
 /*console.log(text);*/
-const day = text.match(/(Mon|Tue|Thu|Fri|Sat|Sun), (Jan|Feb|Mar|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec) \d{1,2}, \d{4}/);
+const day = text.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun), (Jan|Feb|Mar|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec) \d{1,2}, \d{4}/);
 const isWeekend = day[1] == "Sat" || day[1] == "Sun" ? true : false;
 /*console.log("Is weekend? " + isWeekend);*/
 
