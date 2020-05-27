@@ -63,7 +63,11 @@ function displayName(name) {
 const text = findText(document.getElementsByTagName("form")[0]);
 /*console.log(text);*/
 const day = text.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun), (Jan|Feb|Mar|Apr|May|June|July|Aug|Sept|Oct|Nov|Dec) \d{1,2}, \d{4}/);
-const isWeekend = day[1] == "Sat" || day[1] == "Sun" ? true : false;
+var isWeekend = false; /* if something went wrong on the date scrape, we'll just say it's not a weekend, so the rest of the script will still run, instead of breaking */
+if (Array.isArray(day) && day.length > 1) {
+  isWeekend = day[1] == "Sat" || day[1] == "Sun" ? true : false;
+  /*console.log("setting isWeekend");*/
+}
 /*console.log("Is weekend? " + isWeekend);*/
 
 /* now, scrape the page to get the departments */
