@@ -330,11 +330,16 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
 
 /* given an html heirarchy, return only the plain-text within it */
 function findText(theNode) {
-  /* console.log(theNode + " (" + typeof theNode + ")"); */
-  theNode = theNode.innerHTML === undefined ? theNode : theNode.innerHTML;
-  /* console.log("now: " + typeof theNode); */
-  var text = replaceHtmlEntities(theNode.replace(/<(?:.|\n)*?>/gm, '')).replace(/(^\s+|\s+$)/g, '');
-  /* console.log("finally: " + text); */
+  var text = "";
+  try {
+    /* console.log(theNode + " (" + typeof theNode + ")"); */
+    theNode = theNode.innerHTML === undefined ? theNode : theNode.innerHTML;
+    /* console.log("now: " + typeof theNode); */
+    text = replaceHtmlEntities(theNode.replace(/<(?:.|\n)*?>/gm, '')).replace(/(^\s+|\s+$)/g, '');
+    /* console.log("finally: " + text); */
+  } catch(e) {
+      console.log("Node was undefined: " + e.message);
+  }
   return text;
 }
 
