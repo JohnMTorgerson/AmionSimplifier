@@ -185,9 +185,13 @@ function findEntries(name, info) {
     case "Endocrinology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend","Diabetes Outpatient Night & Holiday"], ""));
+    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend","Diabetes Outpatient Night & Holiday"], "Diabetes Outpatient"));
       entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Day", ""));
-      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Providers only"));
+      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Endo Diabetes Night"));
+      if (isWeekend) {
+        entries = entries.concat(findEntryByCat(info, "Minneapolis Inpatient", "Mpls Inpatient"));
+        entries = entries.concat(findEntryByCat(info, "Saint Paul Inpatient", "St Paul Inpatient"));
+      }
       break;
     case "Genetics":
       entries = entries.concat(findEntryByCat(info, "Genetics MD", ""));
