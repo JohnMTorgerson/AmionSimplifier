@@ -185,9 +185,9 @@ function findEntries(name, info) {
     case "Endocrinology":
       /* if we pass an array of strings into findEntryByCat() instead of just a string, */
       /* it will return results upon matching either one (or both) */
-    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend","Diabetes Outpatient Night & Holiday"], "Diabetes Outpatient"));
+    	entries = entries.concat(findEntryByCat(info, ["Diabetes Outpatient Night","Diabetes Outpatient Weekend","Diabetes Outpatient Night & Holiday"], "Diabetes Outpt"));
       entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Day", ""));
-      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Endo Diabetes Night"));
+      entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Endo Dbts Night"));
       if (isWeekend) {
         entries = entries.concat(findEntryByCat(info, "Minneapolis Inpatient", "Mpls Inpatient"));
         entries = entries.concat(findEntryByCat(info, "Saint Paul Inpatient", "St Paul Inpatient"));
@@ -211,7 +211,7 @@ function findEntries(name, info) {
     case "ID/Immuno/Inf. Control":
       /* entries = entries.concat(findEntryByCat(info, "ID Mpls", "Mpls")); */
       entries = entries.concat(findEntryByCat(info, "ID St. Paul", "On Call"));
-      entries = entries.concat(findEntryByCat(info, ["Evening Urgent Immunology Consult", "Weekend Urgent Immunology Consult"], "Immunology Consult"));
+      entries = entries.concat(findEntryByCat(info, ["Evening Urgent Immunology Consult", "Weekend Urgent Immunology Consult"], "Immunology"));
       break;
     case "Neurology - St. Paul Children's":
       entries = entries.concat(findEntryByCat(info, "Children's Neurology-Noran Day", ""));
