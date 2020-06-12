@@ -71,7 +71,22 @@ if (Array.isArray(day) && day.length > 1) {
 /*console.log("Is weekend? " + isWeekend);*/
 
 /* now, scrape the page to get the departments */
-var mainTable = document.getElementsByTagName("table")[1];
+var mainTable;
+var tables = document.getElementsByTagName("table");
+var regex = /^(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+Service.*Name.*Training.*Contact.*Tel(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+$/;
+/* the page is not well organized at all, so we have to loop through every table element on the page
+   and search for the one whose first <tr> innerHTML matches the regex above, basically looking for this string:
+   <td>&nbsp;</td><td>Service&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td>Name&nbsp;</td><td>Training&nbsp;</td><td>&nbsp;</td><td>Contact&nbsp;</td><td>Tel&nbsp;<x></x></td><td>&nbsp;</td>
+   and that's the main table with all the data in it
+*/
+for (let i=0; i<tables.length; i++) {
+  /*console.log(i);
+  console.log(tables[i].getElementsByTagName("tr")[0].innerHTML);*/
+  if (tables[i].getElementsByTagName("tr").length > 0 && regex.test(tables[i].getElementsByTagName("tr")[0].innerHTML)) {
+    mainTable = tables[i];
+    break;
+  }
+}
 var rows = mainTable.children[0].children;
 var dept = {}; /* a hash object, one for each department */
 var deptRows = []; /* a temp array to store all the multiple rows for each dept (gets stored as a value in 'dept') */
