@@ -73,10 +73,11 @@ if (Array.isArray(day) && day.length > 1) {
 /* now, scrape the page to get the departments */
 var mainTable;
 var tables = document.getElementsByTagName("table");
-var regex = /^(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+Service.*Name.*Training.*Contact.*Tel(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+$/;
+var regex = /^(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+Service.*Name.*Training.*Contact(?:.*Tel)?(?:<(?:\/?)(?:td|x)>|&nbsp;|\s)+$/;
 /* the page is not well organized at all, so we have to loop through every table element on the page
-   and search for the one whose first <tr> innerHTML matches the regex above, basically looking for this string:
+   and search for the one whose first <tr> innerHTML matches the regex above, basically looking for one of these strings:
    <td>&nbsp;</td><td>Service&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td>Name&nbsp;</td><td>Training&nbsp;</td><td>&nbsp;</td><td>Contact&nbsp;</td><td>Tel&nbsp;<x></x></td><td>&nbsp;</td>
+   <td>&nbsp;</td><td>Service&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td>Name&nbsp;</td><td>Training&nbsp;</td><td>&nbsp;</td><td>Contact&nbsp;<x></x></td><td>&nbsp;</td>
    and that's the main table with all the data in it
 */
 for (let i=0; i<tables.length; i++) {
