@@ -304,6 +304,8 @@ function findEntries(name, info) {
 /* 'descrip' is a string which is a manually coded description of the position we're searching for, to display (e.g. 'Backup' or 'St Paul') */
 /* 'occurrence' specifies which occurrence of the test string to return (0 being the first), in case there are more than one */
 function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
+/*function findEntryByCat(deptRowElements, deptCategories, descrip="", occurrence) {*/
+	
   if (typeof deptCategories === 'string') {
     deptCategories = [deptCategories];
   } /* convert string to array of string */
@@ -326,8 +328,15 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
         if (matchCount == occurrence || typeof occurrence == 'undefined') {
           var time = findText(teeArrr.children[2]);
           var name = findText(teeArrr.children[3]);
+	  var url = null;
+  /*      try {
+            url = teeArrr.children[6].getElementsByTagName('a')[0].getAttribute('href');
+	  } catch(e) {
+	    console.log('could not find url for ' + name + ' ' + time + ' - ' + e);
+	  }*/
           if (name != "--") { /* as long as the name isn't blank */
             matches.push(formatEntry(time, name, descrip)); /* package result and add it to 'matches' array */
+/*            matches.push(formatEntry(time, name, descrip, url)); /* package result and add it to 'matches' array */
           }
         }
       	/* increment matchCount */
