@@ -303,9 +303,8 @@ function findEntries(name, info) {
 /* 'deptCategories' can be either a string or an array of strings; if array, test for match with any of the strings therein */
 /* 'descrip' is a string which is a manually coded description of the position we're searching for, to display (e.g. 'Backup' or 'St Paul') */
 /* 'occurrence' specifies which occurrence of the test string to return (0 being the first), in case there are more than one */
-function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
-/*function findEntryByCat(deptRowElements, deptCategories, descrip="", occurrence) {*/
-	
+function findEntryByCat(deptRowElements, deptCategories, descrip="", occurrence) {
+
   if (typeof deptCategories === 'string') {
     deptCategories = [deptCategories];
   } /* convert string to array of string */
@@ -329,14 +328,13 @@ function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
           var time = findText(teeArrr.children[2]);
           var name = findText(teeArrr.children[3]);
 	  var url = null;
-  /*      try {
-            url = teeArrr.children[6].getElementsByTagName('a')[0].getAttribute('href');
+    try {
+      url = teeArrr.children[6].getElementsByTagName('a')[0].getAttribute('href');
 	  } catch(e) {
 	    console.log('could not find url for ' + name + ' ' + time + ' - ' + e);
-	  }*/
+	  }
           if (name != "--") { /* as long as the name isn't blank */
-            matches.push(formatEntry(time, name, descrip)); /* package result and add it to 'matches' array */
-/*            matches.push(formatEntry(time, name, descrip, url)); /* package result and add it to 'matches' array */
+            matches.push(formatEntry(time, name, descrip, url)); /* package result and add it to 'matches' array */
           }
         }
       	/* increment matchCount */
@@ -373,7 +371,7 @@ function findText(theNode) {
 }
 
 /* format the on call provider string in a <div> */
-function formatEntry(field1, field2, field3) {
+function formatEntry(field1, field2, field3, url) {
   if (field2 === undefined) {
     field2 = "";
   }
@@ -384,12 +382,24 @@ function formatEntry(field1, field2, field3) {
   var time = document.createTextNode(field1 + " ");
   var name = document.createTextNode(field2);
   var descrip = document.createTextNode(" " + field3);
+
   var timeNode = document.createElement("time");
   var nameNode = document.createElement("summary");
   var descripNode = document.createElement("span");
+
   timeNode.appendChild(time);
-  nameNode.appendChild(name);
   descripNode.appendChild(descrip);
+
+  /* if we found a url to page, link the name to that */
+  if (url!== null && url !== undefined) {
+    var nameLink = document.createElement("a");
+    nameLink.appendChild(name);
+    nameLink.setAttribute("href", url);
+    nameNode.appendChild(nameLink);
+  } else {
+    nameNode.appendChild(name);
+  }
+
   timeNode.className = "time";
   nameNode.className = "provider-name";
   descripNode.className = "description";

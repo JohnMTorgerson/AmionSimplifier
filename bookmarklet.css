@@ -121,6 +121,14 @@ h1 {
 .provider-name {
   color:#99B090;
 }
+.provider-name a, .provider-name a:link {
+  color:#99B090;
+  text-decoration: none;
+}
+.provider-name a:hover, .provider-name a:active {
+  color:#BBFFBB;
+  text-decoration: none;
+}
 
 /* o/c time */
 .time {
