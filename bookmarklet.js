@@ -270,8 +270,8 @@ function findEntries(name, info) {
       entries = entries.concat(findEntryByCat(info, ["Trauma Surgery DAY Back-up (NO GEN SURG CALLS)","Trauma Surgery NIGHT Back-up (NO GEN SURG CALLS), 5..."], "Backup Surgery"));
       break;
     case "Urology":
-      entries = entries.concat(findEntryByCat(info, "PSA Urology OUTSIDE MD Consults (Call First)", "")); /* 8a-5p */
-      entries = entries.concat(findEntryByCat(info, "PSA Urology OUTSIDE MD Consults", "")); /* 5p on */
+      entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults (Call First)", "PSA Urology OUTSIDE MD consults 8a-5p"], "")); /* 8a-5p */
+      entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults","PSA Urology OUTSIDE MD consults 5p-8a"], "")); /* 5p on */
       break;
 
 
@@ -303,7 +303,10 @@ function findEntries(name, info) {
 /* 'deptCategories' can be either a string or an array of strings; if array, test for match with any of the strings therein */
 /* 'descrip' is a string which is a manually coded description of the position we're searching for, to display (e.g. 'Backup' or 'St Paul') */
 /* 'occurrence' specifies which occurrence of the test string to return (0 being the first), in case there are more than one */
-function findEntryByCat(deptRowElements, deptCategories, descrip="", occurrence) {
+function findEntryByCat(deptRowElements, deptCategories, descrip, occurrence) {
+  if (descrip === undefined) {
+    descrip = "";
+  }
 
   if (typeof deptCategories === 'string') {
     deptCategories = [deptCategories];
