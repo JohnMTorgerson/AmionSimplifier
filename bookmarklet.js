@@ -265,12 +265,17 @@ function findEntries(name, info) {
       entries = entries.concat(findEntryByCat(info, "Children's St Paul Outpt - Wknd", ""));
       break;
     case "Trauma Service":
-      entries = entries.concat(findEntryByCat(info, "Trauma Surgery DAY (NO GEN SURG CALLS)", "Surgery"));
+      if (isWeekend) {
+        entries = entries.concat(findEntryByCat(info, "Trauma Surgery DAY (NO GEN SURG CALLS)", "Surgery"));
+        entries = entries.concat(findEntryByCat(info, "Trauma Surgery DAY Back-up (NO GEN SURG CALLS)", "Backup Surgery"));
+      }
       entries = entries.concat(findEntryByCat(info, "Trauma Surgery NIGHT (NO GEN SURG CALLS)", "Surgery"));
-      entries = entries.concat(findEntryByCat(info, ["Trauma Surgery DAY Back-up (NO GEN SURG CALLS)","Trauma Surgery NIGHT Back-up (NO GEN SURG CALLS), 5..."], "Backup Surgery"));
+      entries = entries.concat(findEntryByCat(info, "Trauma Surgery NIGHT Back-up (NO GEN SURG CALLS), 5...", "Backup Surgery"));
       break;
     case "Urology":
-      entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults (Call First)", "PSA Urology OUTSIDE MD consults 8a-5p"], "")); /* 8a-5p */
+      if (isWeekend) {
+        entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults (Call First)", "PSA Urology OUTSIDE MD consults 8a-5p"], "")); /* 8a-5p */
+      }
       entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults","PSA Urology OUTSIDE MD consults 5p-8a"], "")); /* 5p on */
       break;
 
