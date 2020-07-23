@@ -33,6 +33,7 @@ var whitelist = {
   "Pain/Palliative Care": "3507",
   "Trauma Service": "7634",
   "Urology": "7634",
+  "Cardiology/CV Surgery": "7631"
 /*  "Hospital Services": "3505",
   "HP Clinic": "3505" */
 };
@@ -50,7 +51,8 @@ function displayName(name) {
     "Surgical Specialties": "Ortho (Plastic)",
     "Pain/Palliative Care": "Pain Team",
     "Trauma Service": "PSA Surgery",
-    "Urology": "PSA Urology"
+    "Urology": "PSA Urology",
+    "Cardiology/CV Surgery": "Heart Clinic"
   };
 
   if (name in displayNames) {
@@ -278,7 +280,15 @@ function findEntries(name, info) {
       }
       entries = entries.concat(findEntryByCat(info, ["PSA Urology OUTSIDE MD Consults","PSA Urology OUTSIDE MD consults 5p-8a"], "")); /* 5p on */
       break;
-
+    case "Cardiology/CV Surgery":
+      if (isWeekend) {
+        entries = entries.concat(findEntryByCat(info, "Cardiology CVCC, CVICU", "Day Cardio"));
+      } else {
+        entries = entries.concat(findEntryByCat(info, "Cardiology Consult Minneapolis", "Day Cardio"));
+      }
+      entries = entries.concat(findEntryByCat(info, "Night Cardiologist", "Night Cardio"));
+      entries = entries.concat(findEntryByCat(info, ["Day Heart Failure Heart Transplant Cardiologist", "Night Heart Failure Heart Transplant Cardiologist"], "Transplant"));
+      break;
 
     /* ----- Hudson ----- */
     case "Hospital Services":
@@ -389,14 +399,16 @@ function formatEntry(field1, field2, field3, url) {
 
   var time = document.createTextNode(field1 + " ");
   var name = document.createTextNode(field2);
-  var descrip = document.createTextNode(" " + field3);
+/*  var descrip = document.createTextNode(" " + field3);*/
+  var descrip = " " + field3;
 
   var timeNode = document.createElement("time");
   var nameNode = document.createElement("summary");
   var descripNode = document.createElement("span");
 
   timeNode.appendChild(time);
-  descripNode.appendChild(descrip);
+/*  descripNode.appendChild(descrip); */
+  descripNode.innerHTML = descrip;
 
   /* if we found a url to page, link the name to that */
   if (url!== null && url !== undefined) {
