@@ -208,7 +208,7 @@ function findEntries(name, info) {
       entries = entries.concat(findEntryByCat(info, "Endocrine Diabetes Night", "Endo Dbts Night"));
       if (isWeekend) {
         entries = entries.concat(findEntryByCat(info, "Minneapolis Inpatient", "Mpls Inpatient"));
-        entries = entries.concat(findEntryByCat(info, "Saint Paul Inpatient", "St Paul Inpatient"));
+        entries = entries.concat(findEntryByCat(info, ["Saint Paul Inpatient","St. Paul Inpatient"], "St Paul Inpatient"));
       }
       break;
     case "Genetics":
